@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> Text Color Changer </title>
+</head>
+<body>
+    <button id="color-btn"> Click here to change text Color</button>
+</body>
+</html>
+
+<style>
+    #color-btn{
+        background-color: black;
+        color: aliceblue;
+        padding: 10px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+</style>
+
+<Script>
+const button = document.getElementById("color-btn");
+button.addEventListener("click",function(){
+    let red = Math.floor(Math.random()*256);
+    let green = Math.floor(Math.random()*256);
+    let blue = Math.floor(Math.random()*256);
+    button.style.color = `rgb(${red},${green},${blue})`;
+});
+</Script>
