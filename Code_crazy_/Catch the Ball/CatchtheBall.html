@@ -53,7 +53,6 @@
     <div id="ball"></div>
   </div>
   <div id="score">Score: 0</div>
-
 </body>
 
 </html>
@@ -65,31 +64,23 @@
   }
 
   #score {
-    background-color: rgb(0, 128, 126);
+    background-color: rgb(190, 233, 232);
     font-size: 24px;
     margin-top: 20px;
   }
 </style>
 
 <script>
-
   let score = 0;
-
   const ball = document.getElementById("ball");
   const scoreDisplay = document.getElementById("score");
-
-
   ball.addEventListener("click", function () {
     score++;
     document.title = `Score: ${score}`;
     ball.style.animationPlayState = "paused";
     scoreDisplay.textContent = `Score: ${score}`;
-
     setTimeout(function () {
       ball.style.animationPlayState = "running";
     }, 1000);
   });
-
-
-
 </script>
