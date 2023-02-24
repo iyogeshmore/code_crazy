@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Snake Game</title>
+</head>
+<body>
+    <div id="game">
+        <canvas id="canvas" width="400" height="400"></canvas>
+    </div>
+    <div id="score">Score: 0</div>
+</body>
+</html>
+
+<style>
+    #game {
+        text-align: center;
+    }
+
+    #score {
+        text-align: center;
+        background-color: rgb(160, 237, 242);
+        margin: 0 auto;
+        padding: 20px;
+        border-radius: 5px;
+        box-shadow: 0 0 10px rgba(246, 0, 0, 0.3);
+        text-align: center;
+    }
+
+    canvas {
+        border: 1px solid rgba(0, 0, 0, 0.923);
+    }
+</style>
+
+<script>
+    var canvas = document.getElementById("canvas");
+    var ctx = canvas.getContext("2d");
+
+    var blockSize = 10;
+    var widthInBlocks = canvas.width / blockSize;
+    var heightInBlocks = canvas.height / blockSize;
+
+    var score = 0;
+
+    var snake = {
+        segments: [[6, 4], [5, 4], [4, 4], [3, 4], [2, 4]],
+        direction: "right"
+    };
+
+    var apple = {
+        position: [Math.floor(Math.random() * widthInBlocks), Math.floor(Math.random() * heightInBlocks)]
+    };
+
+    // Draw a block at a specific position
+    function drawBlock(position) {
+        var x = position[0] * blockSize;
+        var y = position[1] * blockSize;
+        ctx.fillRect(x, y, blockSize, blockSize);
+    }
+
+    // Draw the snake on the canvas
+    function drawSnake() {
+        for (var i = 0; i < snake.segments.length; i++) {
+            drawBlock(snake.segments[i]);
+        }
+    }
+
+    // Move the snake one block in the current direction
+    function moveSnake() {
+        var head = snake.segments[0].slice();
+        switch (snake.direction) {
+            case "up":
+                head[1]--;
+                break;
+            case "down":
+                head[1]++;
+                break;
+            case "left":
+                head[0]--;
+                break;
+            case "right":
+                head[0]++;
+                break;
+        }
+        snake.segments.unshift(head);
+        if (head[0] == apple.position[0] && head[1] == apple.position[1]) {
+            // The snake ate the apple, so create a new apple and increase the score
+            apple.position = [Math.floor(Math.random() * widthInBlocks), Math.floor(Math.random() * heightInBlocks)];
+            score++;
+        } else {
+            // The snake didn't eat the apple, so remove the last segment of the snake
+            snake.segments.pop();
+        }
+    }
+
+    // Check if the snake has collided with the walls or itself
+    function checkCollision() {
+        var head = snake.segments[0];
+        if (head[0] < 0 || head[0] >= widthInBlocks || head[1] < 0 || head[1] >= heightInBlocks) {
+            return true;
+        }
+        for (var i = 1; i < snake.segments.length; i++) {
+            if (head[0] == snake.segments[i][0] && head[1] == snake.segments[i][1]) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    // Update the game every 100 milliseconds
+    var intervalId = setInterval(function () {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        moveSnake();
+        drawSnake();
+        drawBlock(apple.position);
+        if (checkCollision()) {
+            // The snake collided with the walls or itself, so end the game
+            clearInterval(intervalId);
+            var scoreElem = document.getElementById("score");
+            scoreElem.innerHTML = "Score: " + score;
+            alert("Game over! Check Your score below ");
+            setTimeout(window.location.reload.bind(window.location), 3000);
+        }
+    }, 100);
+
+    // Change the direction of the snake when a key is pressed
+    document.addEventListener("keydown", function (event) {
+        switch (event.keyCode) {
+            case 37: // Left arrow
+                if (snake.direction != "right") {
+                    snake.direction = "left";
+                }
+                break;
+            case 38: // Up arrow
+                if (snake.direction != "down") {
+                    snake.direction = "up";
+                }
+                break;
+            case 39: // Right arrow
+                if (snake.direction != "left") {
+                    snake.direction = "right";
+                }
+                break;
+
+            case 40: // Down arrow
+                if (snake.direction != "up") {
+                    snake.direction = "down";
+                }
+                break;
+        }
+    });
+    function draw() {
+        // Clear the canvas
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        // Draw the snake
+        snake.draw();
+
+        // Draw the food
+        food.draw();
+
+        // Update the score
+        scoreElem.innerHTML = "Score: " + score;
+
+        // Move the snake
+        snake.move();
+
+        // Check for collisions
+        if (snake.checkCollision()) {
+            // Game over
+            gameOver();
+            return;
+        }
+
+        // Check if the snake has eaten the food
+        if (snake.eatFood(food)) {
+            // Increase the score and update the food
+            score += 10;
+            food.update();
+        }
+
+        // Call the draw function again after a short delay
+        setTimeout(draw, 1000 / FPS);
+    }
+
+</script>
