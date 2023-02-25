@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fun Game</title>
+</head>
+<body>
+  <h1>Fun Game</h1>
+  <p>Click the buttons to reveal a surprise!</p>
+  <div class="game-board">
+    <button class="game-button" id="button1"></button>
+    <button class="game-button" id="button2"></button>
+    <button class="game-button" id="button3"></button>
+  </div>
+</body>
+</html>
+
+<style>
+  * {
+    box-sizing: border-box;
+    font-family: sans-serif;
+  }
+
+  body {
+    background-color: #f7e5d6;
+    margin: 0;
+    padding: 20px;
+  }
+
+  h1 {
+    text-align: center;
+  }
+
+  p {
+    text-align: center;
+  }
+
+  .game-board {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+  }
+
+  .game-button {
+    background-color: #ffffff;
+    border: 1px solid #000000;
+    border-radius: 50%;
+    width: 100px;
+    height: 100px;
+    margin: 10px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .game-button img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 1s;
+    transform: scale(0);
+  }
+
+  .game-button:hover img {
+    transform: scale(1.2);
+  }
+
+  .game-button:focus img {
+    transform: scale(1.5);
+  }
+</style>
+
+<script>
+  const images = [
+    "https://media.giphy.com/media/kNSeTs31XBZ3G/giphy.gif",
+    "https://media.giphy.com/media/y4kKhFfd84iYM/giphy.gif",
+    "https://media.tenor.com/UnbAarwP6q8AAAAC/funny-anime.gif",
+  ];
+
+  const buttons = document.querySelectorAll(".game-button");
+
+  buttons.forEach((button, index) => {
+    button.addEventListener("click", () => {
+      const img = document.createElement("img");
+      img.src = images[index];
+      button.appendChild(img);
+      button.disabled = true;
+    });
+  });
+</script>
