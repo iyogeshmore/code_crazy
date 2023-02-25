@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Rock Paper Scissors</title>
+  <link rel="stylesheet" type="text/css" href="style.css">
+</head>
+<body>
+  <h1>Rock Paper Scissors</h1>
+  <div id="scoreboard">
+    <p id="playerScore">Player: 0</p>
+    <p id="computerScore">Computer: 0</p>
+  </div>
+  <div id="gameContainer">
+    <button id="rock">Rock</button>
+    <button id="paper">Paper</button>
+    <button id="scissors">Scissors</button>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
+
+<style>
+    body {
+  text-align: center;
+}
+
+h1 {
+  font-size: 3rem;
+}
+
+#scoreboard {
+  font-size: 1.5rem;
+  margin-top: 2rem;
+}
+
+#gameContainer {
+  display: flex;
+  justify-content: center;
+  margin-top: 2rem;
+}
+
+button {
+  font-size: 1.5rem;
+  margin: 1rem;
+  padding: 1rem 2rem;
+}
+
+</style>
+
+<script>
+    const rockButton = document.querySelector('#rock');
+const paperButton = document.querySelector('#paper');
+const scissorsButton = document.querySelector('#scissors');
+const playerScoreDisplay = document.querySelector('#playerScore');
+const computerScoreDisplay = document.querySelector('#computerScore');
+let playerScore = 0;
+let computerScore = 0;
+
+rockButton.addEventListener('click', playRound.bind(null, 'rock'));
+paperButton.addEventListener('click', playRound.bind(null, 'paper'));
+scissorsButton.addEventListener('click', playRound.bind(null, 'scissors'));
+
+function playRound(playerSelection) {
+  const computerSelection = computerPlay();
+  const result = determineResult(playerSelection, computerSelection);
+  updateScoreboard(result);
+  alert(`You chose ${playerSelection}, the computer chose ${computerSelection}. ${result}`);
+  checkForGameEnd();
+}
+
+function computerPlay() {
+  const choices = ['rock', 'paper', 'scissors'];
+  return choices[Math.floor(Math.random() * choices.length)];
+}
+
+function determineResult(playerSelection, computerSelection) {
+  if (playerSelection === computerSelection) {
+    return "It's a tie!";
+  }
+  switch (playerSelection) {
+    case 'rock':
+      return computerSelection === 'scissors' ? 'You win!' : 'You lose!';
+    case 'paper':
+      return computerSelection === 'rock' ? 'You win!' : 'You lose!';
+    case 'scissors':
+      return computerSelection === 'paper' ? 'You win!' : 'You lose!';
+  }
+}
+
+function updateScoreboard(result) {
+  if (result === 'You win!') {
+    playerScore++;
+    playerScoreDisplay.textContent = `Player: ${playerScore}`;
+  } else if (result === 'You lose!') {
+    computerScore++;
+    computerScoreDisplay.textContent = `Computer: ${computerScore}`;
+  }
+}
+
+function checkForGameEnd() {
+  if (playerScore === 5) {
+    alert("Congratulations, you win the game!");
+    resetGame();
+  } else if (computerScore === 5) {
+    alert("Sorry, you lost the game.");
+    resetGame();
+  }
+}
+
+function resetGame() {
+  playerScore = 0;
+  computerScore = 0;
+  playerScoreDisplay.textContent = "Player: 0";
+  computerScoreDisplay.textContent = "Computer: 0";
+}
+
+
+</script>
