@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Guessing Game</title>
+  </head>
+  <body>
+    <h1>Guessing Game</h1>
+    <p>Guess a number between 1 and 10:</p>
+    <input type="text" id="guessInput" />
+    <button id="guessButton">Guess</button>
+    <p id="result"></p>
+    <button id="resetButton">Play Again</button>
+  </body>
+</html>
+
+<style>
+  body {
+    text-align: center;
+  }
+
+  h1 {
+    font-size: 3rem;
+  }
+
+  p {
+    font-size: 1.5rem;
+  }
+
+  #guessInput {
+    font-size: 1.5rem;
+    padding: 0.5rem;
+  }
+
+  button {
+    font-size: 1.5rem;
+    padding: 0.5rem 1rem;
+    margin: 1rem;
+  }
+
+  #result {
+    font-size: 2rem;
+    margin: 2rem 0;
+  }
+</style>
+
+<script>
+  const guessInput = document.getElementById("guessInput");
+  const guessButton = document.getElementById("guessButton");
+  const resetButton = document.getElementById("resetButton");
+  const result = document.getElementById("result");
+
+  let answer = Math.floor(Math.random() * 10) + 1;
+  let tries = 5;
+
+  guessButton.addEventListener("click", checkGuess);
+  resetButton.addEventListener("click", resetGame);
+
+  function checkGuess() {
+    let guess = parseInt(guessInput.value);
+
+    if (guess === answer) {
+      result.textContent = " Congratulation !!! You guessed it!";
+      guessButton.disabled = true;
+      resetButton.disabled = false;
+    } else {
+      tries--;
+      if (tries === 0) {
+        result.textContent = `Sorry, the answer was ${answer}.`;
+        guessButton.disabled = true;
+        resetButton.disabled = false;
+      } else {
+        result.textContent = `Nope. You have ${tries} tries left.`;
+        guessInput.value = "";
+      }
+    }
+  }
+
+  function resetGame() {
+    answer = Math.floor(Math.random() * 10) + 1;
+    tries = 5;
+    guessButton.disabled = false;
+    resetButton.disabled = true;
+    guessInput.value = "";
+    result.textContent = "";
+  }
+</script>
